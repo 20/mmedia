@@ -3,13 +3,21 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-#import os
+import os
 
-def path(instance, filename):
-    return settings.MEDIA_ROOT + instance.user.username + '/' + filename
+def _path(instance):
+    return os.path.join(settings.MEDIA_ROOT, instance.user.username, \
+                            instance.filename)
 
-def path_relative(instance, filename):
-        return instance.author.username + '/' + instance.mediatype + '/' + filename
+#    return settings.MEDIA_ROOT + instance.user.username + '/' + \
+#        instance.mediatype + '/' + instance.filename
+
+
+def _path_to_upload(instance, filename):
+    return os.path.join(instance.author.username, instance.mediatype, filename)
+
+#    return instance.author.username + '/' + instance.mediatype + '/' \
+#        + filename
 
 
 class MMedia(models.Model):
@@ -21,11 +29,25 @@ class MMedia(models.Model):
     description = models.TextField(_('description'), blank=True)
     author = models.ForeignKey(User)
     date = models.DateTimeField(_('release date'), blank=True, null=True)
-    filename = models.FileField(upload_to=path_relative)
+    filename = models.FileField(upload_to=_path_to_upload)
+    mediatype = "mmedia"
 #    tags = TagField(verbose_name=_('tags'), help_text=tagfield_help_text)
+
+    def path(self):
+        return _path(self)
+
+#    def path_to_upload(self, filename):
+#        return _path_to_upload(self, filename)
+    
+    def path_relative(self):
+        return os.path.join(self.author.username, self.mediatype, \
+                                self.filename.path)
 
     def __unicode__(self):
         return self.title
+    
+    class Meta:
+        abstract = True
 
 
 class Audio(MMedia):
