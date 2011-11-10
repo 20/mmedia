@@ -9,15 +9,9 @@ def _path(instance):
     return os.path.join(settings.MEDIA_ROOT, instance.user.username, \
                             instance.filename)
 
-#    return settings.MEDIA_ROOT + instance.user.username + '/' + \
-#        instance.mediatype + '/' + instance.filename
-
-
 def _path_to_upload(instance, filename):
-    return os.path.join(instance.author.username, instance.mediatype, filename)
-
-#    return instance.author.username + '/' + instance.mediatype + '/' \
-#        + filename
+    # Come faccio a scegliere il repository/directory dove salvare? Per ora da settings
+    return os.path.join(settings.GITANNEX_DIR, settings.PORTAL_NAME, instance.author.username, instance.mediatype, filename)
 
 
 class MMedia(models.Model):
@@ -29,19 +23,16 @@ class MMedia(models.Model):
     description = models.TextField(_('description'), blank=True)
     author = models.ForeignKey(User)
     date = models.DateTimeField(_('release date'), blank=True, null=True)
-    filename = models.FileField(upload_to=_path_to_upload)
+    fileref = models.FileField(upload_to=_path_to_upload)
     mediatype = "mmedia"
 #    tags = TagField(verbose_name=_('tags'), help_text=tagfield_help_text)
 
     def path(self):
         return _path(self)
 
-#    def path_to_upload(self, filename):
-#        return _path_to_upload(self, filename)
-    
     def path_relative(self):
         return os.path.join(self.author.username, self.mediatype, \
-                                self.filename.path)
+                                self.fileref.path)
 
     def __unicode__(self):
         return self.title
@@ -49,14 +40,12 @@ class MMedia(models.Model):
     class Meta:
         abstract = True
 
-
+        
 class Audio(MMedia):
     mediatype = "audio"
-#    media = models.ForeignKey(MMedia, related_name='audio_mmedia')
     
 class Image(MMedia):
     mediatype = "image"
-#    media = models.ForeignKey(MMedia, related_name='image_mmedia')
     height = models.IntegerField(max_length=4)
     width = models.IntegerField(max_length=4)
 
@@ -69,7 +58,6 @@ class Image(MMedia):
 
 class Video(MMedia):
     mediatype = "video"
-#    media = models.ForeignKey(MMedia, related_name='video_mmedia')
     preview = models.ImageField(upload_to="video_thumbnails")
 
     def get_tiny_object(self):
@@ -81,31 +69,3 @@ class Video(MMedia):
 
 
 
-# picture = Picture.objects.create(foo='some picture')
-# video = Video.objects.create(bar='some video')
-# something1 = Something.objects.create(media=picture)
-# something2 = Something.objects.create(media=video)
-# print something1.media.get_tiny_object() # this is a picture remember?
-# print something2.media.get_tiny_object() # and lo, here is a video
-
-
-
-# Forse da mettere in un package separato  
-# class MultimediaFile(models.Model):
-#     user = models.ForeignKey(User) 
-#     name = models.TextField()
-#     filename = models.FileField(upload_to=_pathToSave())
-    
-#     def __unicode__(self):
-#         return u"%s" % self.id
-
-#     def _pathToSave():
-#         return User.username
-    
-#     def save():
-#         super()
-#         gitAnnex.gitAdd(filename, _pathToSave())
-
-# gitAdd('exampleFile.txt', '/usr/local/example_git_repo_dir')
-
-    
