@@ -1,0 +1,4 @@
+* Intercettare la filesync_done signal e ricreare gli oggetti 
+
+
+
