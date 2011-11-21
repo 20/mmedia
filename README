@@ -1,3 +1,13 @@
-NPDD - Rede Mocambos
+         /
+      _ V
+       \| |/__
+ <==    | /      *NPDD/Rede Mocambos*
+ ==>    |/  http://wiki.mocambos.net/Nucleo_de_Pesquisa_e_Desenvolvimento_Digital
+ nnn    |    "Vamos fazer um mundo digital mais do nosso jeito..."
+______/~~~\________________________________________________________________ _ _ _
+       /
+      MMEDIA
 
-Aplicação Django para gerir arquivos multimediais. Trabalha junto a aplicação gitannex para o sync entre instalações django. 
+Aplicação Django para gerir arquivos multimediais. 
+Trabalha junto a aplicação gitannex (https://github.com/20/gitannex)
+para o sync entre dos arquivos entre instalações django. 
