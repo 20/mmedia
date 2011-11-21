@@ -68,4 +68,6 @@ class Video(MMedia):
         verbose_name_plural = _('videos')
 
 
+def createObjectFromFiles():
+    pass
 
