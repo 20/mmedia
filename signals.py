@@ -1,22 +1,18 @@
-from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.core import serializers
+from django.conf import settings
 
 from gitannex.signals import filesync_done
-
 from gitannex.models import GitAnnexRepository
-from mmedia.models import createObjectFromFiles
-
-from django.core import serializers
-
-from django.conf import settings
 
 # Listen to signals /aka plugin to gitannex
 
-@receiver(filesync_done, instance=GitAnnexRepository)
-def syncGitAnnexRepository(instance, **kwargs):
-    # Fai il sync.. ri
+
+@receiver(filesync_done, sender=GitAnnexRepository)
+def syncGitAnnexRepository(sender, **kwargs):
+    print ">>> DESERIALIZING"
     for root, dirs, files in os.walk(\
-        os.path.join(settings.MEDIA_ROOT, settings.GITANNEX_DIR, instance.repositoryURLOrPath)):
+        os.path.join(settings.MEDIA_ROOT, settings.GITANNEX_DIR, sender.repositoryURLOrPath)):
         for file in files:
             if file.endswith('.xml'):
                 xmlIn = open(file, "r")

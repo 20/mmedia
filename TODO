@@ -1,4 +1,10 @@
-* Intercettare la filesync_done signal e ricreare gli oggetti 
+* Intercettare la filesync_done signal e ricreare gli oggetti (da completare, non intercetta la signal)
+* Gestire la cancellazione degli oggetti:
+  - Delete del file xxx
+  - git annex drop xxx
+  - rimuovi l'oggetto serializzato xxx.xml
+  - git rm xxx.xml 
+
 
 
 

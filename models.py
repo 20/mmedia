@@ -11,7 +11,7 @@ def _path(instance):
                             instance.filename)
 
 def _path_to_upload(instance, filename):
-    # Come faccio a scegliere il repository/directory dove salvare? Per ora da settings
+    # TODO: Next release should manage gin annex directory dynamically
     return os.path.join(settings.GITANNEX_DIR, settings.PORTAL_NAME, instance.author.username, instance.mediatype, filename)
 
 def createObjectFromFiles():
@@ -46,11 +46,11 @@ class MMedia(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        print type(self)
+        print type(self) # DEBUG
         serializeTo = os.path.join(settings.MEDIA_ROOT, settings.GITANNEX_DIR,\
                                        settings.PORTAL_NAME, settings.SERIALIZED_DIR,\
                                        os.path.basename(self.fileref.path) + '.xml')
-        print '>>>> Serialize to: ' + serializeTo
+        print '>>>> Serialize to: ' + serializeTo # DEBUG
         out = open(serializeTo, "w")
         XMLSerializer = serializers.get_serializer("xml")
         xml_serializer = XMLSerializer()
