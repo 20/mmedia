@@ -13,4 +13,4 @@ ______/~~~\________________________________________________________________ _ _ 
 
 Aplicação Django para gerir arquivos multimediais. 
 Trabalha junto a aplicação gitannex (https://github.com/20/gitannex)
-para o sync entre dos arquivos entre instalações django. 
+para o sync dos arquivos entre instalações django. 
