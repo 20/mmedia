@@ -5,6 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.core import serializers
 
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 def _path(instance):
     return os.path.join(settings.MEDIA_ROOT, instance.user.username, \
@@ -46,11 +49,11 @@ class MMedia(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        print type(self) # DEBUG
+        logger.debug(type(self))
         serializeTo = os.path.join(settings.MEDIA_ROOT, settings.GITANNEX_DIR,\
                                        settings.PORTAL_NAME, settings.SERIALIZED_DIR,\
                                        os.path.basename(self.fileref.path) + '.xml')
-        print '>>>> Serialize to: ' + serializeTo # DEBUG
+        logger.info('>>>> Serialize to: ' + serializeTo)
         out = open(serializeTo, "w")
         XMLSerializer = serializers.get_serializer("xml")
         xml_serializer = XMLSerializer()
